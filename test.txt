@@ -1,0 +1,5 @@
+#gerichtet
+#gewichtet
+Hamburg,Bremen,123
+Bremen,Hamburg,123
+Hamburg,Berlin,289
