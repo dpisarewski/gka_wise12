@@ -13,10 +13,10 @@ public class Application {
 		GraphUndirected gu = new GraphUndirected(DefaultWeightedEdge.class);
 		gd.load("graph1.gka");
 		gu.load("graph2.gka");
-		GraphDefaultPath pathD = (GraphDefaultPath) gd.find(new GraphVertex("a"), new GraphVertex("i"), "BFS");
+		GraphDefaultPath pathD = (GraphDefaultPath) gd.find(new GraphVertex("a"), new GraphVertex("b"), "DFS");
 		System.out.println(pathD.toString());
 		
-		GraphDefaultPath pathU = (GraphDefaultPath) gu.find(new GraphVertex("a"), new GraphVertex("a"), "DFS");
+		GraphDefaultPath pathU = (GraphDefaultPath) gu.find(new GraphVertex("a"), new GraphVertex("b"), "BFS");
 		System.out.println(pathU.toString());
 	}
 

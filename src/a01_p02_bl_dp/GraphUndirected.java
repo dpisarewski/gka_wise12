@@ -165,7 +165,7 @@ public class GraphUndirected extends WeightedPseudograph<GraphVertex, DefaultWei
 		//Den Anfang in die Closed Liste einfügen
 		closed.put(start, cost);
 		//Beenden, wenn Anfang das Ziel ist
-		if (start.equals(vertex)) return createPath(start, vertex, closed);
+		if (start.equals(vertex)) return cost == 0 ? createPath(start, vertex, closed) : null;
 		//Nachbarknoten ermitteln
     	List<GraphVertex> neighbours = new ArrayList<GraphVertex>();
     	neighbours = getNeighbours(start, closed);
