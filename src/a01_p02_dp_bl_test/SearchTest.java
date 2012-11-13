@@ -3,7 +3,6 @@ package a01_p02_dp_bl_test;
 import static org.junit.Assert.*;
 
 import org.jgrapht.GraphPath;
-import org.jgrapht.graph.DefaultWeightedEdge;
 import org.junit.*;
 
 import a01_p02_dp_bl.*;

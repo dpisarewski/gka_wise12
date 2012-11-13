@@ -1,4 +1,4 @@
-package a01_p02_dp_bl;
+package a01_p02_dp_bl.interfaces;
 
 import java.io.IOException;
 import java.text.ParseException;

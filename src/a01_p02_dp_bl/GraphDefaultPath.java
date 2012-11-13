@@ -1,5 +1,7 @@
 package a01_p02_dp_bl;
 
+import a01_p02_dp_bl.interfaces.CustomGraph;
+
 import java.util.*;
 import org.apache.commons.lang3.*;
 
@@ -11,7 +13,7 @@ public class GraphDefaultPath<V, E extends DefaultEdge> implements GraphPath<V, 
 	// ~ Instance fields
 	// --------------------------------------------------------
 
-	private Graph<V, E> graph;
+	private CustomGraph graph;
 
 	private LinkedList<E> edgeList;
 	
@@ -25,7 +27,7 @@ public class GraphDefaultPath<V, E extends DefaultEdge> implements GraphPath<V, 
 
 	// ~ Constructors
 	// -----------------------------------------------------------
-	public GraphDefaultPath(Graph<V, E> graph) {
+	public GraphDefaultPath(CustomGraph graph) {
 		this.graph = graph;
 		this.startVertex = null;
 		this.endVertex = null;
@@ -43,7 +45,7 @@ public class GraphDefaultPath<V, E extends DefaultEdge> implements GraphPath<V, 
 		weight 				= g.weight;
 	}
 
-	public GraphDefaultPath(Graph<V, E> graph, V startVertex, V endVertex, LinkedList<E> edgeList, double weight) {
+	public GraphDefaultPath(CustomGraph graph, V startVertex, V endVertex, LinkedList<E> edgeList, double weight) {
 		this.graph = graph;
 		this.startVertex = startVertex;
 		this.endVertex = endVertex;
@@ -66,8 +68,8 @@ public class GraphDefaultPath<V, E extends DefaultEdge> implements GraphPath<V, 
 	}
 
 	// implement GraphPath
-	public Graph<V, E> getGraph() {
-		return graph;
+	public Graph getGraph() {
+		return (Graph)graph;
 	}
 
 	// implement GraphPath

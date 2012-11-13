@@ -4,18 +4,14 @@ import java.io.*;
 
 import java.text.ParseException;
 
+import a01_p02_dp_bl.interfaces.*;
 import org.jgrapht.*;
 import org.jgrapht.graph.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 // es muss ein Pseudograph als Basisklasse sein, weil sonst keine Schleifen erlaubt sind (graph2.gka enthält eine Schleife)
-public class GraphUndirected extends WeightedPseudograph<GraphVertex, DefaultWeightedEdge> implements GraphSerialization
+public class GraphUndirected extends WeightedPseudograph<GraphVertex, DefaultWeightedEdge> implements GraphSerialization, CustomGraph
 {
 	private static final long serialVersionUID = -5976890015116381006L;
 	boolean m_hasWeights = false;
@@ -187,7 +183,7 @@ public class GraphUndirected extends WeightedPseudograph<GraphVertex, DefaultWei
 	}
 
 	//Lädt einen gespeicherten Graph aus einer Datei
-	public Graph load(String filename){
+	public CustomGraph load(String filename){
 		try {
 			deserialize(new FileReader(filename));
 		} catch (IOException e) {
@@ -197,66 +193,11 @@ public class GraphUndirected extends WeightedPseudograph<GraphVertex, DefaultWei
 		}
         return this;
 	}
-	
-	public GraphPath find(GraphVertex start, GraphVertex vertex, String alg) {
-		if (alg.equals("BFS")) {
-			// Wenn Breadth-First Suche
-			return breadthFirst(start, vertex);
-		} else if (alg.equals("DFS")) {
-			// Wenn Depth-First Suche
-			return depthFirst(start, vertex, new HashMap<GraphVertex, Integer>(), 0);
-		}
-		return null;
-	}
-	
-	private GraphPath depthFirst(GraphVertex start, GraphVertex vertex, Map<GraphVertex, Integer> closed, int cost) {
-		//Den Anfang in die Closed Liste einfägen
-		closed.remove(start);
-		closed.put(start, cost);
-		//Beenden, wenn Anfang das Ziel ist
-		if (start.equals(vertex)) return cost == 0 ? createPath(start, vertex, closed) : null;
-		//Nachbarknoten ermitteln
-    	List<GraphVertex> neighbours = new ArrayList<GraphVertex>();
-    	neighbours = getNeighbours(start, closed);
-    	
-    	//Iteration äber Nachbarknoten
-        for (GraphVertex v : neighbours){
-        	//Wenn aktueller Knoten nicht in der Closed Liste
-            if (closed.get(v) == null || closed.get(v) > cost){
-            	//Rufe die Suche rekursiv auf, und wenn der Zielknoten gefunden ist
-            	depthFirst(v, vertex, closed, cost + 1);
-            }
-        }
-        //Gebe einen leeren Pfad zuräck, falls nichts gefunden
-        return cost == 0 ? createPath(start, vertex, closed) : null;
-	}
 
-	protected GraphPath breadthFirst(GraphVertex start, GraphVertex vertex){
-		List<GraphVertex> open = new ArrayList<GraphVertex>(); 
-		Map<GraphVertex, Integer> closed = new HashMap<GraphVertex, Integer>();
-		List<GraphVertex> neighbours = new ArrayList<GraphVertex>();
-		//Den Anfang in die Open Liste einfägen
-		open.add(start);
-		//Den Anfang in die Closed Liste einfägen
-		closed.put(start, 0);
-		//Iteration äber Open Liste
-		while(!open.isEmpty()){
-			//Nehme den Nächsten Knoten aus der Open Liste
-			GraphVertex v = open.remove(0);
-			//Beende, wenn aktueller Knoten der ZielKnoten ist
-			if (v.equals(vertex)) break;
-			//Nachbarknoten ermitteln
-			neighbours = getNeighbours(v, closed);
-			//Nachbarknoten in die Closed Liste einfägen
-			for(GraphVertex n : neighbours){
-				if(closed.get(n) == null || closed.get(n) > closed.get(v) + 1) closed.put(n, closed.get(v) + 1);
-			}
-			open.addAll(neighbours);
-		}
-		//Erstelle einen Pfad
-		return createPath(start, vertex, closed);
-	}
-	
+    public GraphPath find(GraphVertex start, GraphVertex vertex, String alg) {
+        return GraphUtils.find(this, start, vertex, alg);
+    }
+
 	protected GraphPath createPath(GraphVertex start, GraphVertex vertex, Map<GraphVertex, Integer> closed){
 		GraphDefaultPath<GraphVertex, DefaultWeightedEdge> path = new GraphDefaultPath<GraphVertex, DefaultWeightedEdge>(this);
 		//Anfangen mit dem Zielknoten
@@ -282,7 +223,7 @@ public class GraphUndirected extends WeightedPseudograph<GraphVertex, DefaultWei
 	}
 	
 	//Filtert Closed Liste nach einem Wert
-		protected List<GraphVertex> filterByValue(GraphVertex vertex, Map<GraphVertex, Integer> map, Integer value){
+		public List<GraphVertex> filterByValue(GraphVertex vertex, Map<GraphVertex, Integer> map, Integer value){
 			if(value == null) return null;
 			List<GraphVertex> filteredVertices = new ArrayList<GraphVertex>();
 			for(GraphVertex v : map.keySet()){
@@ -297,7 +238,7 @@ public class GraphUndirected extends WeightedPseudograph<GraphVertex, DefaultWei
 	}
 	
 	//Ermittelt Nachbarknoten
-	protected List<GraphVertex> getNeighbours(GraphVertex vertex, Map<GraphVertex, Integer> closed){
+	public List<GraphVertex> getNeighbours(GraphVertex vertex, Map<GraphVertex, Integer> closed){
 		List<GraphVertex> neighbours = new ArrayList<GraphVertex>();
 		neighbours = getSuccessors(vertex);
 		neighbours = new ArrayList(new HashSet(neighbours));

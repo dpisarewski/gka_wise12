@@ -33,7 +33,7 @@ public class Testing {
 		FileReader fr;
 		FileWriter fw;
 		try {
-	        GraphDirected gd = new GraphDirected(DefaultWeightedEdge.class);
+	        GraphDirected gd = new GraphDirected();
 			// read graph
 			fr = new FileReader("graph1.gka");
 			gd.deserialize(fr);
@@ -46,7 +46,7 @@ public class Testing {
 			fw.close();
 	        
 	        
-	        GraphUndirected gu = new GraphUndirected(DefaultWeightedEdge.class);
+	        GraphUndirected gu = new GraphUndirected();
 			// read graph
 			fr = new FileReader("graph2.gka");
 			gu.deserialize(fr);

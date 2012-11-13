@@ -4,13 +4,14 @@ import java.io.*;
 import java.text.ParseException;
 import java.util.*;
 
+import a01_p02_dp_bl.interfaces.*;
 import org.jgrapht.*;
 import org.jgrapht.graph.*;
 
 // svn+ssh://leppin_b@svn.informatik.haw-hamburg.de/srv/svn/p02_dp_bl/
 
 //es muss ein Pseudograph als Basisklasse sein, weil sonst keine Schleifen erlaubt sind (graph1.gka enthält eine Schleife)
-public class GraphDirected extends DirectedPseudograph<GraphVertex, DefaultWeightedEdge> implements GraphSerialization
+public class GraphDirected extends DirectedPseudograph<GraphVertex, DefaultWeightedEdge> implements GraphSerialization, CustomGraph
 {
 	private static final long serialVersionUID = -2586742127931932763L;
 	boolean m_hasWeights = false;
@@ -177,7 +178,7 @@ public class GraphDirected extends DirectedPseudograph<GraphVertex, DefaultWeigh
 		}
 	}
 
-	public Graph load(String filename) {
+	public CustomGraph load(String filename) {
 		try {
 			deserialize(new FileReader(filename));
 		} catch (IOException e) {
@@ -200,100 +201,21 @@ public class GraphDirected extends DirectedPseudograph<GraphVertex, DefaultWeigh
 	}
 
 	public GraphPath find(GraphVertex start, GraphVertex vertex, String alg) {
-		if (alg.equals("BFS")) {
-			// Wenn Breadth-First Suche
-			return breadthFirst(start, vertex);
-		} else if (alg.equals("DFS")) {
-			// Wenn Depth-First Suche
-			return depthFirst(start, vertex, new HashMap<GraphVertex, Integer>(), 0);
-		}
-		return null;
+		return GraphUtils.find(this, start, vertex, alg);
 	}
 
-
-	private GraphPath depthFirst(GraphVertex start, GraphVertex vertex, Map<GraphVertex, Integer> closed, int cost) {
-		//Den Anfang in die Closed Liste einfügen
-		closed.remove(start);
-		closed.put(start, cost);
-		//Beenden, wenn Anfang das Ziel ist
-		if (start.equals(vertex)) return cost == 0 ? createPath(start, vertex, closed) : null;
-		//Nachbarknoten ermitteln
-    	List<GraphVertex> neighbours = new ArrayList<GraphVertex>();
-    	neighbours = getNeighbours(start, closed);
-
-    	//Iteration über Nachbarknoten
-        for (GraphVertex v : neighbours){
-        	//Wenn aktueller Knoten nicht in der Closed Liste
-            if (closed.get(v) == null || closed.get(v) > cost){
-            	//Rufe die Suche rekursiv auf, und wenn der Zielknoten gefunden ist
-            	depthFirst(v, vertex, closed, cost + 1);
-            }
+    //Filtert Closed Liste nach einem Wert
+    public List<GraphVertex> filterByValue(GraphVertex vertex, Map<GraphVertex, Integer> map, Integer value){
+        if(value == null) return null;
+        List<GraphVertex> filteredVertices = new ArrayList<GraphVertex>();
+        for(GraphVertex v : map.keySet()){
+            if(map.get(v).equals(value) && Graphs.predecessorListOf(this, vertex).contains(v)) filteredVertices.add(v);
         }
-        //Gebe einen leeren Pfad zurück, falls nichts gefunden
-        return cost == 0 ? createPath(start, vertex, closed) : null;
-	}
+        return filteredVertices;
+    }
 
-	protected GraphPath breadthFirst(GraphVertex start, GraphVertex vertex){
-		List<GraphVertex> open = new ArrayList<GraphVertex>();
-		Map<GraphVertex, Integer> closed = new HashMap<GraphVertex, Integer>();
-		List<GraphVertex> neighbours = new ArrayList<GraphVertex>();
-		//Den Anfang in die Open Liste einfügen
-		open.add(start);
-		//Den Anfang in die Closed Liste einfügen
-		closed.put(start, 0);
-		//Iteration über Open Liste
-		while(!open.isEmpty()){
-			//Nehme den Nächsten Knoten aus der Open Liste
-			GraphVertex v = open.remove(0);
-			//Beende, wenn aktueller Knoten der ZielKnoten ist
-			if (v.equals(vertex)) break;
-			//Nachbarknoten ermitteln
-			neighbours = getNeighbours(v, closed);
-			//Nachbarknoten in die Closed Liste einfügen
-			for(GraphVertex n : neighbours){
-				if(closed.get(n) == null || closed.get(n) > closed.get(v) + 1) closed.put(n, closed.get(v) + 1);
-			}
-			open.addAll(neighbours);
-		}
-		//Erstelle einen Pfad
-		return createPath(start, vertex, closed);
-	}
-	protected GraphPath createPath(GraphVertex start, GraphVertex vertex, Map<GraphVertex, Integer> closed){
-		GraphDefaultPath<GraphVertex, DefaultWeightedEdge> path = new GraphDefaultPath<GraphVertex, DefaultWeightedEdge>(this);
-		//Anfangen mit dem Zielknoten
-		GraphVertex v = vertex;
-		//Vorgängerknoten ermitteln
-		List<GraphVertex> predecessors = new ArrayList<GraphVertex>();
-		//Solange es Knoten in der Closed Liste gibt
-		while(v != null && closed.get(v) > 0){
-			//Füge den aktuellen Knoten in den Pfad ein
-			path.addVertex(v);
-			//Vorgangerknoten ermitteln
-			predecessors = filterByValue(v, closed, closed.get(v) - 1);
-			//Beenden, falls keine Vorgängerknoten
-			if(predecessors == null) break;
-			//TODO Sortiere nach dem Gewicht der Kanten
-			//Collections.sort(predecessors);
-			v = predecessors.get(0);
-		}
-		//Den Anfangsknoten in den Pfad einfügen
-		path.addVertex(start);
-		//Pfad umkehren
-		return path.reverse();
-	}
-	
-	//Filtert Closed Liste nach einem Wert
-	protected List<GraphVertex> filterByValue(GraphVertex vertex, Map<GraphVertex, Integer> map, Integer value){
-		if(value == null) return null;
-		List<GraphVertex> filteredVertices = new ArrayList<GraphVertex>();
-		for(GraphVertex v : map.keySet()){
-			if(map.get(v).equals(value) && Graphs.predecessorListOf(this, vertex).contains(v)) filteredVertices.add(v);
-		}
-		return filteredVertices;
-	}
-	
-	//Ermittelt Nachbarknoten
-	protected List<GraphVertex> getNeighbours(GraphVertex vertex, Map<GraphVertex, Integer> closed){
+    //Ermittelt Nachbarknoten
+	public List<GraphVertex> getNeighbours(GraphVertex vertex, Map<GraphVertex, Integer> closed){
 		List<GraphVertex> neighbours = new ArrayList<GraphVertex>();
 		neighbours = getSuccessors(vertex);
 		neighbours = new ArrayList(new HashSet(neighbours));
