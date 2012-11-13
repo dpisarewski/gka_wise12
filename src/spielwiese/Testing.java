@@ -3,9 +3,8 @@ package spielwiese;
 import java.io.*;
 import java.text.ParseException;
 
-import a01_p02_bl_dp.*;
+import a01_p02_dp_bl.*;
 
-import org.jgrapht.*;
 import org.jgrapht.graph.*;
 
 public class Testing {
@@ -32,6 +31,7 @@ public class Testing {
 		}
 		
 		FileReader fr;
+		FileWriter fw;
 		try {
 	        GraphDirected gd = new GraphDirected(DefaultWeightedEdge.class);
 			// read graph
@@ -41,6 +41,10 @@ public class Testing {
 			
 	        System.out.println(gd.toString());
 
+			fw = new FileWriter("graph1out.gka");
+			gd.serialize(fw);
+			fw.close();
+	        
 	        
 	        GraphUndirected gu = new GraphUndirected(DefaultWeightedEdge.class);
 			// read graph
@@ -51,6 +55,9 @@ public class Testing {
 	        // note undirected edges are printed as: {<v1>,<v2>}
 	        System.out.println(gu.toString());
 	
+			fw = new FileWriter("graph2out.gka");
+			gu.serialize(fw);
+			fw.close();
 
 	        
 		}
