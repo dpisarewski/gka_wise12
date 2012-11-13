@@ -1,0 +1,22 @@
+graph G {
+  s [ label="s" ];
+  a [ label="a" ];
+  f [ label="f" ];
+  b [ label="b" ];
+  d [ label="d" ];
+  c [ label="c" ];
+  e [ label="e" ];
+  t [ label="t" ];
+  s -- a;
+  s -- f;
+  a -- b;
+  a -- d;
+  f -- d;
+  d -- c;
+  d -- e;
+  b -- c;
+  b -- t;
+  e -- c;
+  e -- t;
+  c -- t;
+}

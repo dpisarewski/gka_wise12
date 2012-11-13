@@ -1,0 +1,17 @@
+graph G {
+  a [ label="a" ];
+  b [ label="b" ];
+  c [ label="c" ];
+  d [ label="d" ];
+  e [ label="e" ];
+  a -- b;
+  a -- c;
+  a -- d;
+  a -- e;
+  b -- c;
+  b -- d;
+  b -- e;
+  c -- d;
+  c -- e;
+  d -- e;
+}
