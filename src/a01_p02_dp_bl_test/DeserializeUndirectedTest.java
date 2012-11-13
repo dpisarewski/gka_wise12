@@ -16,7 +16,7 @@ public class DeserializeUndirectedTest {
 	@Test
 	public void testDeserialize() {
 		boolean exception = false;
-		GraphUndirected g = new GraphUndirected(DefaultWeightedEdge.class);
+		GraphUndirected g = new GraphUndirected();
 		assertTrue(g != null);
 		
 		StringReader sr;
@@ -54,8 +54,5 @@ public class DeserializeUndirectedTest {
 		System.out.println(g.toString());
 		assertTrue(exception);
 		assertTrue(g.toString().equals("([], [])"));
-		
-		
 	}
-
 }

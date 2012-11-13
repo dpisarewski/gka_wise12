@@ -14,8 +14,8 @@ public class SearchTest {
 	
 	@Before
 	public void setUp(){
-		gd = new GraphDirected(DefaultWeightedEdge.class);
-		gu = new GraphUndirected(DefaultWeightedEdge.class);
+		gd = new GraphDirected();
+		gu = new GraphUndirected();
 	}
 
 	@Test

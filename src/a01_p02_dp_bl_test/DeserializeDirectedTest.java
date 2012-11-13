@@ -16,7 +16,7 @@ public class DeserializeDirectedTest {
 	@Test
 	public void testDeserialize() {
 		boolean exception = false;
-		GraphDirected g = new GraphDirected(DefaultWeightedEdge.class);
+		GraphDirected g = new GraphDirected();
 		assertTrue(g != null);
 		
 		StringReader sr;

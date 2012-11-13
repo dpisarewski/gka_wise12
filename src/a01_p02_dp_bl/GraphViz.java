@@ -41,12 +41,12 @@ public class GraphViz {
     }
 
     public static void main(String[] args) throws IOException {
-            buildDotFile("src/files/graph1",   new GraphDirected(DefaultWeightedEdge.class).load("src/files/graph1.gka"));
-            buildDotFile("src/files/graph2",   new GraphUndirected(DefaultWeightedEdge.class).load("src/files/graph2.gka"));
-            buildDotFile("src/files/graphDK5", new GraphDirected(DefaultWeightedEdge.class).load("src/files/graphDK5.gka"));
-            buildDotFile("src/files/graphDVL", new GraphDirected(DefaultWeightedEdge.class).load("src/files/graphDVL.gka"));
-            buildDotFile("src/files/graphUK5", new GraphUndirected(DefaultWeightedEdge.class).load("src/files/graphUK5.gka"));
-            buildDotFile("src/files/graphUVL", new GraphUndirected(DefaultWeightedEdge.class).load("src/files/graphUVL.gka"));
+            buildDotFile("src/files/graph1",   new GraphDirected().load("src/files/graph1.gka"));
+            buildDotFile("src/files/graph2",   new GraphUndirected().load("src/files/graph2.gka"));
+            buildDotFile("src/files/graphDK5", new GraphDirected().load("src/files/graphDK5.gka"));
+            buildDotFile("src/files/graphDVL", new GraphDirected().load("src/files/graphDVL.gka"));
+            buildDotFile("src/files/graphUK5", new GraphUndirected().load("src/files/graphUK5.gka"));
+            buildDotFile("src/files/graphUVL", new GraphUndirected().load("src/files/graphUVL.gka"));
     }
 
 }

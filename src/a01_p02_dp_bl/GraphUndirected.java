@@ -2,12 +2,10 @@ package a01_p02_dp_bl;
 
 import java.io.*;
 
-
 import java.text.ParseException;
 
 import org.jgrapht.*;
 import org.jgrapht.graph.*;
-
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,7 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-// es muss ein Pseudograph als Basisklasse sein, weil sonst keine Schleifen erlaubt sind (graph2.gka enth�lt eine Schleife)
+// es muss ein Pseudograph als Basisklasse sein, weil sonst keine Schleifen erlaubt sind (graph2.gka enthält eine Schleife)
 public class GraphUndirected extends WeightedPseudograph<GraphVertex, DefaultWeightedEdge> implements GraphSerialization
 {
 	private static final long serialVersionUID = -5976890015116381006L;
@@ -25,9 +23,8 @@ public class GraphUndirected extends WeightedPseudograph<GraphVertex, DefaultWei
 	
 	int m_accessCounter = 0;
 	
-	public GraphUndirected(Class<? extends DefaultWeightedEdge> edgeClass) {
-		super(edgeClass);
-		// TODO Auto-generated constructor stub
+	public GraphUndirected() {
+		super(DefaultWeightedEdge.class);
 	}
 
 	@Override
@@ -89,8 +86,8 @@ public class GraphUndirected extends WeightedPseudograph<GraphVertex, DefaultWei
 		LineNumberReader lineReader =  new LineNumberReader(in);
 		lineReader.setLineNumber(0);
 		
-		// Graph erst leeren (Alle evtl. vorhandenen Edges und Vertices l�schen )		
-		// in zwei schritten, da iterieren auf dem Set w�hrend des l�schens Fehler verursacht
+		// Graph erst leeren (Alle evtl. vorhandenen Edges und Vertices läschen )		
+		// in zwei schritten, da iterieren auf dem Set während des läschens Fehler verursacht
 		DefaultWeightedEdge[] edges = edgeSet().toArray(new DefaultWeightedEdge[0]);
 		removeAllEdges(edges);		
 		Object[] vertices = vertexSet().toArray();
@@ -189,7 +186,7 @@ public class GraphUndirected extends WeightedPseudograph<GraphVertex, DefaultWei
 		}		
 	}
 
-	//L�dt einen gespeicherten Graph aus einer Datei
+	//Lädt einen gespeicherten Graph aus einer Datei
 	public Graph load(String filename){
 		try {
 			deserialize(new FileReader(filename));
@@ -213,7 +210,7 @@ public class GraphUndirected extends WeightedPseudograph<GraphVertex, DefaultWei
 	}
 	
 	private GraphPath depthFirst(GraphVertex start, GraphVertex vertex, Map<GraphVertex, Integer> closed, int cost) {
-		//Den Anfang in die Closed Liste einf�gen
+		//Den Anfang in die Closed Liste einfägen
 		closed.remove(start);
 		closed.put(start, cost);
 		//Beenden, wenn Anfang das Ziel ist
@@ -222,7 +219,7 @@ public class GraphUndirected extends WeightedPseudograph<GraphVertex, DefaultWei
     	List<GraphVertex> neighbours = new ArrayList<GraphVertex>();
     	neighbours = getNeighbours(start, closed);
     	
-    	//Iteration �ber Nachbarknoten
+    	//Iteration äber Nachbarknoten
         for (GraphVertex v : neighbours){
         	//Wenn aktueller Knoten nicht in der Closed Liste
             if (closed.get(v) == null || closed.get(v) > cost){
@@ -230,7 +227,7 @@ public class GraphUndirected extends WeightedPseudograph<GraphVertex, DefaultWei
             	depthFirst(v, vertex, closed, cost + 1);
             }
         }
-        //Gebe einen leeren Pfad zur�ck, falls nichts gefunden
+        //Gebe einen leeren Pfad zuräck, falls nichts gefunden
         return cost == 0 ? createPath(start, vertex, closed) : null;
 	}
 
@@ -238,19 +235,19 @@ public class GraphUndirected extends WeightedPseudograph<GraphVertex, DefaultWei
 		List<GraphVertex> open = new ArrayList<GraphVertex>(); 
 		Map<GraphVertex, Integer> closed = new HashMap<GraphVertex, Integer>();
 		List<GraphVertex> neighbours = new ArrayList<GraphVertex>();
-		//Den Anfang in die Open Liste einf�gen
+		//Den Anfang in die Open Liste einfägen
 		open.add(start);
-		//Den Anfang in die Closed Liste einf�gen
+		//Den Anfang in die Closed Liste einfägen
 		closed.put(start, 0);
-		//Iteration �ber Open Liste
+		//Iteration äber Open Liste
 		while(!open.isEmpty()){
-			//Nehme den N�chsten Knoten aus der Open Liste
+			//Nehme den Nächsten Knoten aus der Open Liste
 			GraphVertex v = open.remove(0);
 			//Beende, wenn aktueller Knoten der ZielKnoten ist
 			if (v.equals(vertex)) break;
 			//Nachbarknoten ermitteln
 			neighbours = getNeighbours(v, closed);
-			//Nachbarknoten in die Closed Liste einf�gen
+			//Nachbarknoten in die Closed Liste einfägen
 			for(GraphVertex n : neighbours){
 				if(closed.get(n) == null || closed.get(n) > closed.get(v) + 1) closed.put(n, closed.get(v) + 1);
 			}
@@ -264,21 +261,21 @@ public class GraphUndirected extends WeightedPseudograph<GraphVertex, DefaultWei
 		GraphDefaultPath<GraphVertex, DefaultWeightedEdge> path = new GraphDefaultPath<GraphVertex, DefaultWeightedEdge>(this);
 		//Anfangen mit dem Zielknoten
 		GraphVertex v = vertex;
-		//Vorg�ngerknoten ermitteln
+		//Vorgängerknoten ermitteln
 		List<GraphVertex> predecessors = new ArrayList<GraphVertex>();
 		//Solange es Knoten in der Closed Liste gibt
 		while(v != null && closed.get(v) > 0){
-			//F�ge den aktuellen Knoten in den Pfad ein
+			//Fäge den aktuellen Knoten in den Pfad ein
 			path.addVertex(v);
-			//Vorg�ngerknoten ermitteln
+			//Vorgängerknoten ermitteln
 			predecessors = filterByValue(v, closed, closed.get(v) - 1);
-			//Beenden, falls keine Vorg�ngerknoten
+			//Beenden, falls keine Vorgängerknoten
 			if(predecessors == null) break;
 			//TODO Sortiere nach dem Gewicht der Kanten 
 			Collections.sort(predecessors);
 			v = predecessors.get(0);
 		}
-		//Den Anfangsknoten in den Pfad einf�gen
+		//Den Anfangsknoten in den Pfad einfägen
 		path.addVertex(start);
 		//Pfad umkehren
 		return path.reverse();
