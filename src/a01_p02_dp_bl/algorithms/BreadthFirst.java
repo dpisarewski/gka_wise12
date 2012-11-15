@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BreadthFirst {
+public class BreadthFirst{
 
     public static GraphPath search(CustomGraph g, GraphVertex start, GraphVertex vertex){
         List<GraphVertex> open = new ArrayList<GraphVertex>();
