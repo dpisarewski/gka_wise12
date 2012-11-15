@@ -27,7 +27,7 @@ public class DijkstraTest {
         GraphVertex startVertex = new GraphVertex("Husum");
         GraphVertex endVertex = new GraphVertex("Hamburg");
 
-        System.out.println("Graph1 Directed BFS");
+        System.out.println("Graph3 Directed Dijkstra");
         GraphAlgoDijkstra dijkstra = new GraphAlgoDijkstra(gu);
         GraphDefaultPath<GraphVertex, DefaultWeightedEdge> p = dijkstra.search(startVertex, endVertex);
         System.out.println(p.toString());
@@ -49,7 +49,7 @@ public class DijkstraTest {
         GraphVertex startVertex = new GraphVertex("Hannover");
         GraphVertex endVertex = new GraphVertex("Soltau");
 
-        System.out.println("Graph1 Directed BFS");
+        System.out.println("Graph3 Directed Dijkstra");
         GraphAlgoDijkstra dijkstra = new GraphAlgoDijkstra(gu);
         GraphDefaultPath<GraphVertex, DefaultWeightedEdge> p = dijkstra.search(startVertex, endVertex);
         System.out.println(p.toString());
@@ -70,7 +70,7 @@ public class DijkstraTest {
         GraphVertex startVertex = new GraphVertex("Cuxhaven");
         GraphVertex endVertex = new GraphVertex("Hamburg");
 
-        System.out.println("Graph1 Directed BFS");
+        System.out.println("Graph3 Directed Dijkstra");
         GraphAlgoDijkstra dijkstra = new GraphAlgoDijkstra(gu);
         GraphDefaultPath<GraphVertex, DefaultWeightedEdge> p = dijkstra.search(startVertex, endVertex);
         System.out.println(p.toString());
