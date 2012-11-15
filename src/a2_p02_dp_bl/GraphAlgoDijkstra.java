@@ -27,7 +27,7 @@ public class GraphAlgoDijkstra {
 
 	public final static String newCurrentVertexStepName = "Neuer aktueller Knoten";
 	public final static String updateSuccessorStepName = "Neuer Nachfolger";
-	public final static String addPathVertexStepName = "Neuen Knoten zum Pfad hinzugef�gt";
+	public final static String addPathVertexStepName = "Neuen Knoten zum Pfad hinzugefügt";
 
 	GraphCommon<GraphVertex, DefaultWeightedEdge> m_graph;
 	GraphAlgoState<GraphVertex, DefaultWeightedEdge> m_algoState;

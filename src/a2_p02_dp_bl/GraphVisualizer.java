@@ -666,6 +666,7 @@ public class GraphVisualizer extends JFrame {
 		// list of algorithms
 		m_algorithms.add(new VisualAstar());
 		m_algorithms.add(new VisualBDFirst());
+        m_algorithms.add(new VisualDijkstra());
 		// HIER WEITERE ALGORITHMEN EINF�GEN:
 		
 		
